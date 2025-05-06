@@ -1,4 +1,4 @@
-# Tenis UPM Web App
+# Frontend Web App
 
 ## Iniciar proyecto
 1. Descargar e instalar NodeJS
