@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import Swal from 'sweetalert2';
 
@@ -25,6 +26,8 @@ export class UserInfoPageComponent {
     password2: ['', [ ]],
     userName: ['', []],
   });
+
+  constructor(private router: Router){}
 
   update() {
     const { password, userName, password2, prefix } = this.myForm.value;
@@ -55,6 +58,10 @@ export class UserInfoPageComponent {
 
   changeEdit() {
     this.editUser.set(!this.editUser());
+  }
+
+  cancelar(){
+    this.router.navigate(['/form'])
   }
 }
 

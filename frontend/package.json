@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^16.2.12",
+    "@angular/cdk": "^16.2.14",
     "@angular/common": "^16.2.12",
     "@angular/compiler": "^16.2.12",
     "@angular/core": "^16.2.12",
@@ -19,6 +20,10 @@
     "@angular/platform-browser-dynamic": "^16.2.12",
     "@angular/router": "^16.2.12",
     "auth-app": "file:",
+    "chart.js": "^4.4.9",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^16.9.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.7.3",
     "tslib": "^2.3.0",

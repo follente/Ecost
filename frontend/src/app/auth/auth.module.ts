@@ -2,10 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { AuthRoutingModule } from './auth-routing.module';
+import { PasswordModule } from 'primeng/password';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { AuthRoutingModule } from './auth-routing.module';
 
 
 @NgModule({
@@ -16,8 +20,12 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule,
     ReactiveFormsModule,
+    AuthRoutingModule,
+    CardModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule
   ]
 })
 export class AuthModule { }

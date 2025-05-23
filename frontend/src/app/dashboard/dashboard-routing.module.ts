@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       { path: 'form', component: FormPageComponent },
       { path: 'userInfo', component: UserInfoPageComponent },
-      { path: '**', redirectTo: 'tourneys' },
+      { path: '**', redirectTo: 'form' },
     ]
   }
 ];

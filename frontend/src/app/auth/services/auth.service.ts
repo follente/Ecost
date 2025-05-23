@@ -27,7 +27,6 @@ export class AuthService {
 
   private setAuthentication(user: User): boolean {
     this._currentUser.set( user );
-    console.log({user});
     this._authStatus.set( AuthStatus.authenticated );
     localStorage.setItem('user', user._id );
     return true;
@@ -63,7 +62,6 @@ export class AuthService {
       return of(false);
     }
     const url   = `${ this.baseUrl }/user/${ userID }`;
-    console.log({url})
     return this.http.get<User>(url)
         .pipe(
           map( ( user ) => this.setAuthentication( user )),

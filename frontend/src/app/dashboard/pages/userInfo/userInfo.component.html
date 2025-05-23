@@ -1,70 +1,43 @@
-<div class="conatiner text-center">
-  <div class="row w-100">
-    <div class="col mt-5">
-      <h2>Información de usuario</h2>
-      <br>
-      <br>
-      <div *ngIf="!editUser()">
-        <ul class="list-group list-group-flush d-flex align-items-center">
-          <li class="text-dark-emphasis">
-            <h5 class="text-dark">Nombre y apellidos</h5>{{ user()?.name }} {{ user()?.lastName }}
-          </li>
-          <br>
-          <li class="text-dark-emphasis">
-            <h5 class="text-dark">Nombre de usuario</h5>{{ user()?.userName }}
-          </li>
-          <br>
-          <li class="text-dark-emphasis">
-            <h5 class="text-dark">Correo electrónico</h5>{{ user()?.email }}
-          </li>
-        </ul>
-      </div>
+<!-- user-info.component.html -->
+<div class="flex justify-content-center p-4">
+  <p-card class="w-full sm:w-30rem surface-card shadow-2 border-round-xl">
 
-      <form *ngIf="editUser()" class="login100-form d-flex align-items-center flex-column" autocomplete="off"
-        [formGroup]="myForm" (ngSubmit)="update()">
-        <div class="wrap-input100 m-b-23 w-25">
-          <span class="label-input100 fs-5">Nombre Usuario</span>
-          <input class="input100" type="text" formControlName="userName" placeholder="">
-          <span class="focus-input100"></span>
-        </div>
+    <ng-template pTemplate="header">
+      <h2 class="text-center text-3xl font-semibold mt-4">Información de usuario</h2>
+    </ng-template>
 
-        <div class="wrap-input100 m-b-23 w-25">
-          <span class="label-input100 fs-5">Contraseña</span>
-          <input class="input100" type="password" formControlName="password" placeholder="">
-          <span class="focus-input100"></span>
-        </div>
+    <ng-container>
+      <ul class="list-none p-0 m-0">
+        <li class="py-3 surface-border">
+          <span class="font-semibold">Nombre y apellidos:</span>
+          <div class="text-lg mt-1">{{ user()?.name }} {{ user()?.lastName }}</div>
+        </li>
 
-        <div class="wrap-input100 w-25">
-          <span class="label-input100 fs-5">Repetir Contraseña</span>
-          <input class="input100" type="password" formControlName="password2" placeholder="">
-          <span class="focus-input100"></span>
-        </div>
+        <li class="py-3 surface-border">
+          <span class="font-semibold">Nombre de usuario:</span>
+          <div class="text-lg mt-1">{{ user()?.userName }}</div>
+        </li>
 
-        <div class="text-right p-t-8 p-b-31"></div>
-      </form>
-      <br>
+        <li class="py-3">
+          <span class="font-semibold">Correo electrónico:</span>
+          <div class="text-lg mt-1">{{ user()?.email }}</div>
+        </li>
+      </ul>
+    </ng-container>
 
-      <button *ngIf="editUser()" class="btn btn-success" [disabled]="myForm.invalid" type="submit">
-        Actualizar información
+  
+    <div class="flex flex-column mt-4 gap-3">
+      <button pButton
+              label="Cerrar sesión"
+              class="p-button-text p-button-danger"
+              (click)="onLogout()">
       </button>
-      <br>
-      <button *ngIf="!editUser()" (click)="changeEdit()" class="btn btn-link text-dark-emphasis">
-        Editar información
+            <button pButton
+              label="Cancelar"
+              class="p-button-text p-button"
+              (click)="cancelar()">
       </button>
-      <br>
-      <div class="d-flex flex-column justify-content-center align-items-center">
-        <button *ngIf="editUser()" (click)="changeEdit()" class="btn btn-link text-dark-emphasis">
-          Cancelar Edición
-        </button>
-        <button (click)="onLogout()" class="btn btn-link text-dark-emphasis">
-          Cerrar Sesión
-        </button>
-      </div>
     </div>
-  </div>
+
+  </p-card>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>

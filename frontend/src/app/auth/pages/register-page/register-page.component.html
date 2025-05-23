@@ -1,78 +1,86 @@
-<form class="login100-form"
-      autocomplete="off"
-      [formGroup]="myForm"
-      (ngSubmit)="register()"
-      >
+<div class="flex justify-content-center align-items-center min-h-screen p-4">
+  <p-card styleClass="w-full sm:w-30rem border-round-2xl">
 
-    <span class="login100-form-title p-b-49">
-        Register | ECOST
-    </span>
+    <!-- título -->
+    <div class="text-center font-medium text-5xl mb-5">
+      Register&nbsp;|&nbsp;ECOST
+    </div>
 
-    <div class="wrap-input100 m-b-23">
-      <span class="label-input100">Nombre y Apellidos</span>
-      <input class="input100"
-             type="text"
-             formControlName="name"
-             placeholder="">
-      <span class="focus-input100"></span>
-  </div>
+    <!-- formulario -->
+    <form class="p-fluid"
+          [formGroup]="myForm"
+          autocomplete="off"
+          (ngSubmit)="register()">
 
-  <div class="wrap-input100 m-b-23">
-    <span class="label-input100">Nombre Usuario</span>
-    <input class="input100"
-           type="text"
-           formControlName="userName"
-           placeholder="">
-    <span class="focus-input100"></span>
-</div>
+      <!-- Nombre y apellidos -->
+      <div class="field mb-3">
+        <label for="name" class="font-medium">Nombre y Apellidos</label>
+        <input id="name"
+               pInputText
+               class="border-round-lg text-lg"
+               placeholder="Nombre completo"
+               formControlName="name" />
+      </div>
 
-    <div class="wrap-input100 m-b-23">
-        <span class="label-input100">Correo</span>
-        <input class="input100"
+      <!-- Nombre de usuario -->
+      <div class="field mb-3">
+        <label for="userName" class="font-medium">Nombre Usuario</label>
+        <input id="userName"
+               pInputText
+               class="border-round-lg text-lg"
+               placeholder="Usuario"
+               formControlName="userName" />
+      </div>
+
+      <!-- Correo -->
+      <div class="field mb-3">
+        <label for="email" class="font-medium">Correo</label>
+        <input id="email"
                type="email"
-               formControlName="email"
-               placeholder="">
-        <span class="focus-input100"></span>
-    </div>
+               pInputText
+               class="border-round-lg text-lg"
+               placeholder="Correo electrónico"
+               formControlName="email" />
+      </div>
 
-    <div class="wrap-input100 m-b-23">
-        <span class="label-input100">Contraseña</span>
-        <input class="input100"
-               type="password"
-               formControlName="password"
-               placeholder="">
-        <span class="focus-input100"></span>
-    </div>
+      <!-- Contraseña -->
+      <div class="field mb-3">
+        <label for="password" class="font-medium">Contraseña</label>
+        <p-password id="password"
+                    class="border-round-lg text-lg"
+                    formControlName="password"
+                    placeholder="Contraseña"
+                    [feedback]="true"
+                    [toggleMask]="true">
+        </p-password>
+      </div>
 
-    <div class="wrap-input100">
-      <span class="label-input100">Repetir Contraseña</span>
-      <input class="input100"
-             type="password"
-             formControlName="password2"
-             placeholder="">
-      <span class="focus-input100"></span>
-  </div>
+      <!-- Repetir contraseña -->
+      <div class="field mb-5">
+        <label for="password2" class="font-medium">Repetir Contraseña</label>
+        <p-password id="password2"
+                    class="border-round-lg text-lg"
+                    formControlName="password2"
+                    placeholder="Repite la contraseña"
+                    [feedback]="false"
+                    [toggleMask]="true">
+        </p-password>
+      </div>
 
-    <div class="text-right p-t-8 p-b-31"></div>
+      <!-- botón -->
+      <button pButton
+              label="Register"
+              class="w-full p-button-lg border-round-lg text-xl"
+              type="submit"
+              [disabled]="myForm.invalid">
+      </button>
 
-    <div class="container-login100-form-btn">
-        <div class="wrap-login100-form-btn">
-            <div class="login100-form-bgbtn"></div>
-            <button class="login100-form-btn"
-                    [disabled]="myForm.invalid"
-                    type="submit">
-                Register
-            </button>
-        </div>
-    </div>
+      <!-- enlace login -->
+      <p class="text-center mt-4 text-lg">
+        ¿Ya tienes cuenta?
+        <a routerLink="/auth/login" class="font-medium">Iniciar sesión</a>
+      </p>
 
-    <div class="flex-col-c p-t-60">
-        <span class="txt1 p-b-17">
-            ¿Ya tienes cuenta?
-        </span>
-
-        <a routerLink="/auth/login" class="txt2">
-            Iniciar Sesion
-        </a>
-    </div>
-</form>
+    </form>
+  </p-card>
+</div>
