@@ -1,0 +1,56 @@
+<!-- Contenedor principal -->
+<div class="flex flex-column align-items-center text-center p-4">
+
+    <div style="background-color: #1da04d; position: fixed; top: 0; left: 0; height: 75px;"
+        class="w-full text-white p-3">
+        <div class="flex align-items-center justify-content-start px-4">
+            <span class="text-4xl font-bold">Ecost</span>
+        </div>
+    </div>
+
+
+    <!-- Título principal -->
+    <div class="text-5xl font-bold mb-3 mt-8">Calcula tu impacto ambiental</div>
+    <p class="text-xl mb-4" style="max-width: 750px;">
+        Nuestra aplicación te permite calcular tu huella de carbono basada en tu consumo de electricidad, agua y
+        combustibles.
+        Obtén resultados precisos y visualiza tu impacto ambiental.
+    </p>
+
+    <!-- Botones -->
+    <div class="flex gap-2 my-3">
+        <p-button label="Iniciar Sesión" [routerLink]="'/auth/login'" />
+
+        <p-button label="Registarse" [outlined]="true" severity="secondary" [routerLink]="'/auth/register'" />
+    </div>
+
+    <!-- Tarjetas informativas -->
+    <div class="flex flex-column md:flex-row gap-7 mt-8 md:w-auto ml-8 mr-8">
+
+        <p-card header="Cálculo Preciso" class="text-left">
+            <p class="m-0">
+                Utiliza datos oficiales para convertir tu consumo en toneladas de CO₂ equivalente.
+            </p>
+        </p-card>
+        <p-card header="Monetización" class="text-left">
+            <p class="m-0">
+                Calcula el coste ambiental de tu huella utilizando precios de carbono actualizados.
+            </p>
+        </p-card>
+        <p-card header="Exportación" class="text-left">
+            <p class="m-0">
+                Genera informes en CSV para contabilidad y documentos PDF con la metodología utilizada.
+            </p>
+        </p-card>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-6 text-sm text-color-secondary py-5"
+        style="position: fixed; bottom: 0; left: 0; width: 100%; background: white;">
+        <p class="text-center text-body-secondary mt-2">Ignacio Follente Bayo - © 2025 UPM, TFG</p>
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <img src="..\..\..\..\assets\images\icons\logoUPM.png" width="150" height="75" alt="" />
+        </div>
+    </div>
+</div>

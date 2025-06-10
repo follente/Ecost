@@ -1,9 +1,9 @@
 <div class="flex justify-content-center align-items-center min-h-screen p-4">
-  <p-card styleClass="w-full sm:w-30rem border-round-2xl">
+  <div class="w-full sm:w-30rem border-round-2xl">
 
-    <!-- título -->
-    <div class="text-center font-medium text-5xl mb-5">
-      Register&nbsp;|&nbsp;ECOST
+    <div class="text-center">
+      <div class="font-bold text-4xl mb-2">Crear una cuenta</div>
+      <div class="texto-gris mb-6">Ingresa tus datos para registrarte</div>
     </div>
 
     <!-- formulario -->
@@ -67,20 +67,20 @@
         </p-password>
       </div>
 
-      <!-- botón -->
-      <button pButton
-              label="Register"
-              class="w-full p-button-lg border-round-lg text-xl"
-              type="submit"
-              [disabled]="myForm.invalid">
-      </button>
+      <!-- Botón -->
+      <p-button 
+        label="Registrarse" 
+        [disabled]="myForm.invalid"
+        type="submit"
+      />
+
 
       <!-- enlace login -->
-      <p class="text-center mt-4 text-lg">
+      <div class="text-center mt-4">
         ¿Ya tienes cuenta?
-        <a routerLink="/auth/login" class="font-medium">Iniciar sesión</a>
-      </p>
+        <a routerLink="/auth/login" class="link-verde">Inciar Sesión</a>
+      </div>
 
     </form>
-  </p-card>
+  </div>
 </div>

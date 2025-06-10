@@ -10,12 +10,14 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthRoutingModule } from './auth-routing.module';
+import { StartPageComponent } from './pages/start-page/start-page.component';
 
 
 @NgModule({
   declarations: [
     LoginPageComponent,
     RegisterPageComponent,
+    StartPageComponent,
     AuthLayoutComponent
   ],
   imports: [

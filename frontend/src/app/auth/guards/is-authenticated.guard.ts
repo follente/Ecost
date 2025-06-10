@@ -18,6 +18,6 @@ export const isAuthenticatedGuard: CanActivateFn = (route, state) => {
 
   // const url = state.url;
   // localStorage.setItem('url', url);
-  router.navigateByUrl('/auth/login');
+  router.navigateByUrl('/auth/start');
   return false;
 };

@@ -15,6 +15,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { PasswordModule } from 'primeng/password';
+import { MenuModule } from 'primeng/menu';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { PasswordModule } from 'primeng/password';
     PasswordModule,
     ButtonModule,
     CardModule,
-    ChartModule
+    ChartModule,
+    MenuModule
   ]
 })
 export class DashboardModule { }

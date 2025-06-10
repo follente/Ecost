@@ -9,10 +9,17 @@ export class DashboardLayoutComponent {
 
   private authService = inject( AuthService );
 
+  rutaActiva = '/dashboard'
+
   public user = computed(() => this.authService.currentUser() );
+  public items: any = ['1', '2', '3'];
 
   get userName() {
     return this.user()?.userName ?? 'Unknown';
+  }
+
+  navegar(str: string){
+   return true
   }
 
 }
