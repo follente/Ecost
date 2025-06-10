@@ -1,4 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
@@ -7,19 +8,20 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class DashboardLayoutComponent {
 
-  private authService = inject( AuthService );
+  public user = computed(() => this.authService.currentUser() )
+  public rutaActiva = '/dashboard'
 
-  rutaActiva = '/dashboard'
+ 
+  constructor(private router: Router, private authService: AuthService) {}
 
-  public user = computed(() => this.authService.currentUser() );
-  public items: any = ['1', '2', '3'];
-
+  
   get userName() {
-    return this.user()?.userName ?? 'Unknown';
+    return this.user()?.userName ?? 'Unknown'
   }
 
   navegar(str: string){
-   return true
+    this.router.navigate(['/layout' + str])
+    this.rutaActiva = str
   }
 
 }

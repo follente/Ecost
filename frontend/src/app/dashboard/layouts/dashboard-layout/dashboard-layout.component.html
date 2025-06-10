@@ -15,54 +15,36 @@
     <aside class="w-16rem p-3 pl-5" style="border-right: 1px solid #d1d5db;">
 
       <div  class="flex flex-column gap-2">
+
         <div (click)="navegar('/dashboard')"
-          [ngClass]="{'bg-gray-100 border-1 border-round border-gray-300': rutaActiva === '/dashboard'}"
-          class="flex align-items-center gap-2 p-2 border-round cursor-pointer hover:surface-border hover:border-1 transition-colors">
+          [ngClass]="{'bg-gray-200 border-round border-gray-300': rutaActiva === '/dashboard'}"
+          class="flex align-items-center gap-2 p-3 border-round cursor-pointer hover:surface-border hover:bg-gray-100 border-round">
           <i class="pi pi-home"></i>
           <span class="font-medium">Dashboard</span>
         </div>
-      </div>
 
-      <ul class="list-none p-0 mt-2">
-        <li class="mb-2">
-        <div class="flex align-items-center gap-2 p-2">
-            <i class="pi pi-home"></i>
-            <span class="font-medium">Dashboard</span>
+        <div (click)="navegar('/calculadora')"
+          [ngClass]="{'bg-gray-200 border-round border-gray-300': rutaActiva === '/calculadora'}"
+          class="flex align-items-center gap-2 p-3 border-round-lg cursor-pointer hover:surface-border hover:bg-gray-100 border-round">
+          <i class="pi pi-calculator"></i>
+          <span class="font-medium">Calculadora</span>
         </div>
-        </li>
-        <li class="mb-2">
-          <a routerLink="/calculadora" routerLinkActive="bg-gray-100"
-            class="flex align-items-center gap-2 p-2 border-round cursor-pointer text-color">
-            <i class="pi pi-calculator"></i>
-            <span class="font-medium">Calculadora</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/historico" routerLinkActive="bg-gray-100"
-            class="flex align-items-center gap-2 p-2 border-round cursor-pointer text-color">
-            <i class="pi pi-history"></i>
-            <span class="font-medium">Histórico</span>
-          </a>
-        </li>
-      </ul>
+
+        <div (click)="navegar('/historico')"
+          [ngClass]="{'bg-gray-200 border-round border-gray-300': rutaActiva === '/historico'}"
+          class="flex align-items-center gap-2 p-3 border-round-lg cursor-pointer hover:surface-border hover:bg-gray-100 border-round">
+          <i class="pi pi-history"></i>
+          <span class="font-medium">Histórico</span>
+        </div>
+
+      </div>
     </aside>
 
     <!-- Contenido dinámico -->
-    <main class="flex-1 p-4 overflow-auto">
+    <div class="flex-1 p-4 overflow-auto">
       <router-outlet></router-outlet>
-    </main>
+    </div>
 
   </div>
 
 </div>
-
-<!-- 
-  <div class="position-fixed top-0 end-0 p-3 d-flex flex-column align-items-center" style="z-index:1030">
-    <a [routerLink]="['/dashboard/userInfo']">
-      <img src="assets/images/icons/user.png" width="48" height="48" />
-    </a>
-
-    <a class="nav-link fs-6 m-2 text-center text-decoration-none" [routerLink]="['/dashboard/userInfo']">
-      {{ userName }}
-    </a>
-  </div> -->

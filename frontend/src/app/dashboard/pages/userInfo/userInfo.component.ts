@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
       display: block;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoPageComponent {
 

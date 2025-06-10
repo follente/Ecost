@@ -9,11 +9,11 @@ import { User } from 'src/app/auth/interfaces';
 import { ChartConfiguration } from 'chart.js/auto';   //  <-- Chart.js 4.x
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css'],
+  selector: 'app-calculadora',
+  templateUrl: './calculadora.component.html',
+  styleUrls: ['./calculadora.component.css'],
 })
-export class FormPageComponent implements OnInit {
+export class CalculadoraPageComponent implements OnInit {
   private tourneyService = inject(TourneyService);
   private authService = inject(AuthService);
   private userService = inject(UserService);

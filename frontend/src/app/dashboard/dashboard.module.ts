@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormPageComponent } from './pages/form/form.component';
+import { CalculadoraPageComponent } from './pages/calculadora/calculadora.component';
 import { UserInfoPageComponent } from './pages/userInfo/userInfo.component';
 
 import { ButtonModule } from 'primeng/button';
@@ -16,13 +16,17 @@ import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { PasswordModule } from 'primeng/password';
 import { MenuModule } from 'primeng/menu';
+import { HistoricoPageComponent } from './pages/historico/historico.component';
+import { DashboardPageComponent } from './pages/dashboard/dashboard.component';
 
 
 @NgModule({
   declarations: [
     DashboardLayoutComponent,
-    FormPageComponent,
-    UserInfoPageComponent
+    CalculadoraPageComponent,
+    UserInfoPageComponent,
+    HistoricoPageComponent,
+    DashboardPageComponent
   ],
   imports: [
     CommonModule,
