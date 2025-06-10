@@ -1,40 +1,43 @@
-<!-- user-info.component.html -->
 <div class="flex justify-content-center p-4">
-  <p-card class="w-full sm:w-30rem surface-card shadow-2 border-round-xl">
+  <p-card class="w-full sm:w-30rem surface-card shadow-4 border-round-2xl">
 
-    <ng-template pTemplate="header">
-      <h2 class="text-center text-3xl font-semibold mt-4">Información de usuario</h2>
-    </ng-template>
+    <div class="text-center mt-2">
+      <div class="text-3xl text-900 font-semibold mb-1">Información de usuario</div>
+    </div>
 
-    <ng-container>
+    <!-- Contenido principal -->
+    <div class="mt-4 px-3">
       <ul class="list-none p-0 m-0">
-        <li class="py-3 surface-border">
-          <span class="font-semibold">Nombre y apellidos:</span>
-          <div class="text-lg mt-1">{{ user()?.name }} {{ user()?.lastName }}</div>
+        <li class="py-3 border-bottom-1 surface-border">
+          <span class="font-medium text-color-secondary">Nombre y apellidos:</span>
+          <div class="text-lg font-semibold mt-1">{{ user()?.name }} {{ user()?.lastName }}</div>
         </li>
 
-        <li class="py-3 surface-border">
-          <span class="font-semibold">Nombre de usuario:</span>
-          <div class="text-lg mt-1">{{ user()?.userName }}</div>
+        <li class="py-3 border-bottom-1 surface-border">
+          <span class="font-medium text-color-secondary">Nombre de usuario:</span>
+          <div class="text-lg font-semibold mt-1">{{ user()?.userName }}</div>
         </li>
 
         <li class="py-3">
-          <span class="font-semibold">Correo electrónico:</span>
-          <div class="text-lg mt-1">{{ user()?.email }}</div>
+          <span class="font-medium text-color-secondary">Correo electrónico:</span>
+          <div class="text-lg font-semibold mt-1">{{ user()?.email }}</div>
         </li>
       </ul>
-    </ng-container>
+    </div>
 
-  
-    <div class="flex flex-column mt-4 gap-3">
+    <!-- Botones -->
+    <div class="flex flex-column mt-5 gap-2 px-3 pb-4">
       <button pButton
               label="Cerrar sesión"
-              class="p-button-text p-button-danger"
+              icon="pi pi-sign-out"
+              class="p-button-outlined p-button-secondary w-full"
               (click)="onLogout()">
       </button>
-            <button pButton
-              label="Cancelar"
-              class="p-button-text p-button"
+
+      <button pButton
+              label="Volver"
+              icon="pi pi-arrow-left"
+              class="p-button-outlined w-full"
               (click)="cancelar()">
       </button>
     </div>

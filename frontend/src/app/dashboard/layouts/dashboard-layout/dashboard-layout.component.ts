@@ -9,12 +9,16 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 export class DashboardLayoutComponent {
 
   public user = computed(() => this.authService.currentUser() )
-  public rutaActiva = '/dashboard'
+  public rutaActiva = ''
 
- 
   constructor(private router: Router, private authService: AuthService) {}
 
-  
+  ngOnInit(){
+    this.router.events.subscribe(() => {
+      this.rutaActiva = this.router.url
+    })
+  }
+
   get userName() {
     return this.user()?.userName ?? 'Unknown'
   }
@@ -22,6 +26,10 @@ export class DashboardLayoutComponent {
   navegar(str: string){
     this.router.navigate(['/layout' + str])
     this.rutaActiva = str
+  }
+
+  esRutaActiva(ruta: string): boolean {
+    return this.rutaActiva.includes(ruta)
   }
 
 }

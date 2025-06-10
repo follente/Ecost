@@ -3,7 +3,7 @@
   <div class="flex justify-content-between align-items-center w-full text-black p-3 px-4" style="border-bottom: 1px solid #d1d5db;">
     <div class="ml-8 text-3xl font-bold">Ecost</div>
 
-    <a class="mr-4" [routerLink]="['/dashboard/userInfo']">
+    <a class="mr-4" [routerLink]="['/layout/userInfo']">
       <img src="assets/images/icons/user.png" width="40" height="40" />
     </a>
   </div>
@@ -17,21 +17,21 @@
       <div  class="flex flex-column gap-2">
 
         <div (click)="navegar('/dashboard')"
-          [ngClass]="{'bg-gray-200 border-round border-gray-300': rutaActiva === '/dashboard'}"
+          [ngClass]="{'bg-gray-200 border-round border-gray-300': esRutaActiva('/dashboard')}"
           class="flex align-items-center gap-2 p-3 border-round cursor-pointer hover:surface-border hover:bg-gray-100 border-round">
           <i class="pi pi-home"></i>
           <span class="font-medium">Dashboard</span>
         </div>
 
         <div (click)="navegar('/calculadora')"
-          [ngClass]="{'bg-gray-200 border-round border-gray-300': rutaActiva === '/calculadora'}"
+          [ngClass]="{'bg-gray-200 border-round border-gray-300': esRutaActiva('/calculadora')}"
           class="flex align-items-center gap-2 p-3 border-round-lg cursor-pointer hover:surface-border hover:bg-gray-100 border-round">
           <i class="pi pi-calculator"></i>
           <span class="font-medium">Calculadora</span>
         </div>
 
         <div (click)="navegar('/historico')"
-          [ngClass]="{'bg-gray-200 border-round border-gray-300': rutaActiva === '/historico'}"
+          [ngClass]="{'bg-gray-200 border-round border-gray-300': esRutaActiva('/historico')}"
           class="flex align-items-center gap-2 p-3 border-round-lg cursor-pointer hover:surface-border hover:bg-gray-100 border-round">
           <i class="pi pi-history"></i>
           <span class="font-medium">Histórico</span>
@@ -41,7 +41,7 @@
     </aside>
 
     <!-- Contenido dinámico -->
-    <div class="flex-1 p-4 overflow-auto">
+    <div class="flex-1 p-6 overflow-auto">
       <router-outlet></router-outlet>
     </div>
 

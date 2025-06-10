@@ -60,7 +60,7 @@ export class UserInfoPageComponent {
   }
 
   cancelar(){
-    this.router.navigate(['/form'])
+    this.router.navigate(['/layout/dashboard'])
   }
 }
 
