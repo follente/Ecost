@@ -4,7 +4,7 @@
         <div class="text-3xl font-bold">Dashboard</div>
         <p class="text-color-secondary mt-1">Bienvenido a tu panel de control de huella de carbono</p>
     </div>
-    <p-button label="Nuevo Calculo" icon="pi pi-plus" />
+    <p-button (click)="navegar('/calculadora')" label="Nuevo Calculo" icon="pi pi-plus" />
 </div>
 
 <!-- Métricas -->
@@ -58,7 +58,7 @@
 
         <div class="flex flex-column align-items-center justify-content-center py-6">
             <span class="text-color-secondary mb-3">No hay cálculos registrados</span>
-            <p-button label="Realizar primer cálculo"/>
+            <p-button (click)="navegar('/calculadora')" label="Realizar primer cálculo"/>
         </div>
     </p-card>
 </div>

@@ -43,7 +43,7 @@ import { DashboardPageComponent } from './pages/dashboard/dashboard.component';
     ButtonModule,
     CardModule,
     ChartModule,
-    MenuModule
-  ]
+    MenuModule,
+  ],
 })
 export class DashboardModule { }

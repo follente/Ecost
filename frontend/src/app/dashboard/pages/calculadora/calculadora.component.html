@@ -1,136 +1,126 @@
-    <div class="p-m-4">
-      <div class="text-4xl font-bold text-left mb-3">Ecost</div>
+<div class="flex justify-content-between align-items-start mb-4 flex-column sm:flex-row gap-3">
+  <div class="text-3xl font-bold">Calculadora de Huella de Carbono</div>
+</div>
 
-      <p-tabView [(activeIndex)]="activeTab">
-        <!-- TAB 0 ▸ ENTRADA DE DATOS -->
-        <p-tabPanel header="Entrada de Datos">
-          <div class="surface-card p-5 shadow-2 border-round-xl p-fluid">
-            <h2 class="text-2xl font-bold mb-1">Introduce tus datos de consumo</h2>
-            <p class="mb-4">
-              Ingresa tu consumo eléctrico mensual y selecciona tu fuente de energía
-            </p>
+<p-tabView [(activeIndex)]="activeTab">
 
-            <div class="p-field mb-4">
-              <label for="kwh" class="block font-medium mb-2">
-                Consumo eléctrico mensual (kWh)
-              </label>
-              <input pInputText type="number" id="kwh"
-                     [(ngModel)]="consumption"
-                     placeholder="kWh consumidos"
-                     class="w-full border-round-xl">
-            </div>
+  <!-- TAB 0  -->
+  <p-tabPanel header="Entrada de Datos">
+      <form [formGroup]="consumosForm" class="surface-card p-5 shadow-2 border-round-xl p-fluid"
+        (ngSubmit)="onSubmit()">
+        <div class="text-2xl text-900 font-bold mb-1">Datos de consumo</div>
+        <p class="mb-4">Introduce tus datos de consumo para calcular tu huella de carbono</p>
 
-            <label class="block font-medium mb-2">Tipo de fuente energética</label>
-            <div class="flex gap-4 mb-5">
-              <div class="p-col-12 p-md-4">
-                <p-radioButton name="energy" value="renewable" [(ngModel)]="energyType" inputId="r"></p-radioButton>
-                <label for="r" class="ml-2">Renovable</label>
-              </div>
-              <div class="p-col-12 p-md-4">
-                <p-radioButton name="energy" value="mixed" [(ngModel)]="energyType" inputId="m"></p-radioButton>
-                <label for="m" class="ml-2">Mixta</label>
-              </div>
-              <div class="p-col-12 p-md-4">
-                <p-radioButton name="energy" value="fossil" [(ngModel)]="energyType" inputId="f"></p-radioButton>
-                <label for="f" class="ml-2">Fósil</label>
-              </div>
-            </div>
+        <div class="p-field mb-4">
+          <label for="electricity">Consumo eléctrico mensual (kWh)</label>
+          <input pInputText id="electricity" type="number" formControlName="consumoElectrico" placeholder="0"
+            class="w-full border-round-xl" />
+        </div>
 
-            <div class="p-grid">
-              <div class="p-col-12 p-md-6 mb-3 md:mb-0">
-                <button pButton
-                        label="Calcular Huella de Carbono"
-                        class="w-full p-button-lg p-button-rounded border-round-xl"
-                        (click)="calculate()">
-                </button>
-              </div>
-            </div>
+        <div class="p-field mb-4">
+          <label for="water">Consumo de Agua (m³)</label>
+          <input pInputText id="water" type="number" formControlName="consumoAgua" placeholder="0"
+            class="w-full border-round-xl" />
+        </div>
+
+        <div class="p-field mb-4">
+          <label for="fuel">Consumo de Diesel (litros)</label>
+          <input pInputText id="fuel" type="number" formControlName="consumoDiesel" placeholder="0"
+            class="w-full border-round-xl" />
+        </div>
+
+        <div class="p-field mb-4">
+          <label for="fuel">Consumo de Gasolina (litros)</label>
+          <input pInputText id="fuel" type="number" formControlName="consumoGasolina" placeholder="0"
+            class="w-full border-round-xl" />
+        </div>
+
+        <div class="p-field mb-4">
+          <label for="carbonPrice">Precio de Carbono (€/tCO2e)</label>
+          <input pInputText id="carbonPrice" type="number" formControlName="precioCO2" placeholder="€/tCO2e"
+            class="w-full border-round-xl" />
+          <label class="block text-secondary mt-2">Valor por defecto: 85€/tCO2e (EU ETS)</label>
+        </div>
+
+        <button pButton (click)="onSubmit()" label="Calcular Huella de Carbono" class="mt-3"></button>
+        
+      </form>
+
+  </p-tabPanel>
+
+  <!-- TAB 1  -->
+  <p-tabPanel header="Resultados">
+    <p-card *ngIf="calculoRealizado">
+      <!-- Título -->
+      <div class="mb-4">
+        <div class="text-2xl text-900 font-bold mb-1">Resultados del Cálculo</div>
+        <p class="text-color-secondary">Huella de carbono y coste ambiental</p>
+      </div>
+
+      <!-- Sección de resultados individuales -->
+      <div class="grid mb-3">
+        <div class="col-12 md:col-4">
+          <div class="border-1 surface-border border-round p-3">
+            <span class="font-medium text-color-secondary">Electricidad</span>
+            <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.electricidad | number: '1.2-2' }} tCO2e</div>
           </div>
-        </p-tabPanel>
+        </div>
+        <div class="col-12 md:col-4">
+          <div class="border-1 surface-border border-round p-3">
+            <span class="font-medium text-color-secondary">Agua</span>
+            <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.agua | number: '1.2-2' }} tCO2e</div>
+          </div>
+        </div>
+        <div class="col-12 md:col-4">
+          <div class="border-1 surface-border border-round p-3">
+            <span class="font-medium text-color-secondary">Diesel</span>
+            <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.diesel | number: '1.2-2' }}  tCO2e</div>
+          </div>
+        </div>
+        <div class="col-12 md:col-4">
+          <div class="border-1 surface-border border-round p-3">
+            <span class="font-medium text-color-secondary">Gasolina</span>
+            <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.gasolina | number: '1.2-2' }}  tCO2e</div>
+          </div>
+        </div>
+      </div>
 
-        <!-- TAB 1 ▸ RESULTADOS -->
-        <p-tabPanel header="Resultados">
-          <ng-container *ngIf="calculated; else emptyState">
-            <!-- Tarjetas resumen -->
-            <div class="p-grid mb-4">
-              <div class="p-col-12 p-md-4 mb-3 md:mb-0">
-                <p-card>
-                  <ng-template pTemplate="title">Huella de Carbono</ng-template>
-                  <ng-template pTemplate="subtitle">
-                    <i class="pi pi-leaf text-green-500"></i>
-                  </ng-template>
-                  <ng-template pTemplate="content">
-                    <h3 class="text-2xl font-semibold">
-                      {{ footprint | number:'1.2-2' }}&nbsp;kg&nbsp;CO₂e
-                    </h3>
-                    <small>Emisiones estimadas basadas en tu consumo</small>
-                  </ng-template>
-                </p-card>
-              </div>
+      <!-- Sección de totales -->
+      <div class="grid mb-4">
+        <div class="col-12 md:col-6">
+          <div class="bg-green-50 border-round p-3">
+            <span class="font-medium text-color-secondary">Total CO2e</span>
+            <div class="text-2xl font-bold mt-1 text-900">{{ this.huellaCO2.total | number: '1.2-2' }} tCO2e</div>
+          </div>
+        </div>
+        <div class="col-12 md:col-6">
+          <div class="bg-green-50 border-round p-3">
+            <span class="font-medium text-color-secondary">Coste Ambiental</span>
+            <div class="text-2xl font-bold mt-1 text-900">{{ this.costeAmbiental | number: '1.2-2' }} €</div>
+            <small class="text-color-secondary">Basado en precio de carbono: €85/tCO2e</small>
+          </div>
+        </div>
+      </div>
 
-              <div class="p-col-12 p-md-4 mb-3 md:mb-0">
-                <p-card>
-                  <ng-template pTemplate="title">Consumo Eléctrico</ng-template>
-                  <ng-template pTemplate="subtitle">
-                    <i class="pi pi-bolt text-yellow-500"></i>
-                  </ng-template>
-                  <ng-template pTemplate="content">
-                    <h3 class="text-2xl font-semibold">{{ consumption }}&nbsp;kWh</h3>
-                    <small>Tu consumo mensual reportado</small>
-                  </ng-template>
-                </p-card>
-              </div>
+      <!-- Botones -->
+      <div class="grid mt-3">
+        <div class="col-12 md:col-4">
+          <button pButton type="button" label="Guardar Resultados" class="p-button w-full"></button>
+        </div>
+        <div class="col-12 md:col-4">
+          <button pButton type="button" label="Exportar CSV" class="p-button-outlined w-full"></button>
+        </div>
+        <div class="col-12 md:col-4">
+          <button pButton type="button" label="Exportar PDF" class="p-button-outlined w-full"></button>
+        </div>
+      </div>
+    </p-card>
 
-              <div class="p-col-12 p-md-4">
-                <p-card>
-                  <ng-template pTemplate="title">Fuente Energética</ng-template>
-                  <ng-template pTemplate="subtitle">
-                    <i class="pi pi-chart-bar"></i>
-                  </ng-template>
-                  <ng-template pTemplate="content">
-                    <h3 class="text-2xl font-semibold">
-                      {{ translateEnergyType(energyType) }}
-                    </h3>
-                    <small>Tipo de energía seleccionada</small>
-                  </ng-template>
-                </p-card>
-              </div>
-            </div>
-
-            <!-- Gráficas -->
-            <div class="p-grid">
-              <div class="p-col-12 p-md-6 mb-4 md:mb-0">
-                <p-card header="Huella de Carbono Mensual"
-                        subheader="Evolución de tu huella de carbono">
-                  <p-chart type="line"
-                           [data]="lineChartData"
-                           [options]="lineChartOptions">
-                  </p-chart>
-                </p-card>
-              </div>
-
-              <div class="p-col-12 p-md-6">
-                <p-card header="Comparativa por Fuente"
-                        subheader="Emisiones según tipo de energía">
-                  <p-chart type="bar"
-                           [data]="barChartData"
-                           [options]="barChartOptions">
-                  </p-chart>
-                </p-card>
-              </div>
-            </div>
-
-            <button pButton label="Volver a Entrada de Datos"
-                    class="p-button-text mt-4"
-                    (click)="activeTab = 0">
-            </button>
-          </ng-container>
-
-          <ng-template #emptyState>
-            <p class="p-text-center p-m-4">
-              Aún no has calculado tu huella de carbono.
-            </p>
-          </ng-template>
-        </p-tabPanel>
-      </p-tabView>
+    <div *ngIf="!calculoRealizado" class="p-5 text-center text-600">
+      <i class="pi pi-info-circle text-4xl mb-3 text-primary"></i>
+      <div class="text-xl text-900 font-semibold">Todavía no has realizado ningún cálculo</div>
+      <p class="mt-2 text-600">Introduce tus datos y pulsa calcular para ver tu huella de carbono.</p>
     </div>
+
+  </p-tabPanel>
+</p-tabView>
