@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-calculadora',
@@ -21,9 +22,9 @@ export class CalculadoraPageComponent implements OnInit {
 
   costeAmbiental: number = 0
   calculoRealizado: boolean = false
-  
 
-  constructor(private fb: FormBuilder) {}
+
+  constructor(private fb: FormBuilder) { }
 
 
   ngOnInit(): void {
@@ -33,7 +34,15 @@ export class CalculadoraPageComponent implements OnInit {
       consumoDiesel: [null, [Validators.min(0)]],
       consumoGasolina: [null, [Validators.min(0)]],
       precioCO2: [85, [Validators.required, Validators.min(0)]]
-    }, {validators: this.alMenosUnConsumoValidator})
+    }, { validators: this.alMenosUnConsumoValidator })
+
+    Object.keys(this.consumosForm.controls).forEach(campo => {
+      this.consumosForm.get(campo)?.valueChanges.subscribe(valor => {
+        if (typeof valor !== 'number' || valor < 0) {
+          this.consumosForm.get(campo)?.setValue(0, { emitEvent: false });
+        }
+      })
+    })
   }
 
 
@@ -47,10 +56,21 @@ export class CalculadoraPageComponent implements OnInit {
       this.activeTab = 1
       this.calculoRealizado = true
     } else {
+      if (this.consumosForm.errors?.['ningunConsumo']!) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Formulario inválido',
+          text: 'Debes rellenar al menos un campo de consumo (valor superior a cero).\n',
+          customClass: {
+            confirmButton: 'p-button p-button-primary'
+          },
+          buttonsStyling: false
+        })
+      }
     }
   }
 
-  calcularHuella(consumoElectrico: number, consumoAgua: number, consumoDiesel: number, consumoGasolina:number, precioCO2: number): number {
+  calcularHuella(consumoElectrico: number, consumoAgua: number, consumoDiesel: number, consumoGasolina: number, precioCO2: number): number {
     this.huellaCO2.electricidad = (consumoElectrico * 0.233)
     this.huellaCO2.agua = (consumoAgua * 0.001)
     this.huellaCO2.diesel = (consumoDiesel * 2.3)

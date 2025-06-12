@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { isNotAuthenticatedGuard, isAuthenticatedGuard } from './auth/guards';
 
 const routes: Routes = [
-
   {
     path: 'auth',
     canActivate: [ isNotAuthenticatedGuard ],
@@ -18,10 +17,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'auth'
   },
-
-
-
-];
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
