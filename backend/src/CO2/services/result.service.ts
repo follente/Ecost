@@ -25,6 +25,15 @@ export class ResultService {
     }
   }
 
+  async findByUser(userId: string): Promise<any[]> {
+    return this.resultModel.find({ user: userId }).sort({ date: -1 }).exec()
+  }
+
+  async delete(id: string): Promise<{ deleted: boolean }> {
+    const result = await this.resultModel.deleteOne({ _id: id }).exec()
+    return { deleted: result.deletedCount === 1 };
+  }
+
   // findAll() {
   //   return this.tourneyModel.find();
   // }

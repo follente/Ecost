@@ -30,6 +30,7 @@ export class CalculadoraPageComponent implements OnInit {
 
   costeAmbiental: number = 0
   calculoRealizado: boolean = false
+  calculoGuardado: boolean = false
 
   constructor(private fb: FormBuilder, private calculadoraService: CalculadoraService) { }
 
@@ -52,7 +53,6 @@ export class CalculadoraPageComponent implements OnInit {
 
   onSubmit(): void {
     if (this.consumosForm.valid) {
-      console.log(this.consumosForm.value)
       this.costeAmbiental = this.calcularHuella()
       this.activeTab = 1
       this.calculoRealizado = true
@@ -72,25 +72,25 @@ export class CalculadoraPageComponent implements OnInit {
   }
 
   calcularHuella(): number {
-    this.huellaCO2.electricidad = (this.consumosForm.value.consumoElectrico * this.obtenerFactorEmision(SupplyType.Electricidad))
-    this.huellaCO2.agua = (this.consumosForm.value.consumoAgua * this.obtenerFactorEmision(SupplyType.Agua))
-    this.huellaCO2.diesel = (this.consumosForm.value.consumoDiesel * this.obtenerFactorEmision(SupplyType.Gasoleo))
-    this.huellaCO2.gasolina = (this.consumosForm.value.consumoGasolina * this.obtenerFactorEmision(SupplyType.Gasolina))
-    this.huellaCO2.butano = (this.consumosForm.value.consumoButano * this.obtenerFactorEmision(SupplyType.GasButano))
-    this.huellaCO2.gasNatural = (this.consumosForm.value.consumoGasNatural * this.obtenerFactorEmision(SupplyType.GasNatural))
+    this.huellaCO2.electricidad = (this.consumosForm.value.consumoElectrico * this.obtenerFactorEmision(SupplyType.Electricidad).conversionFactor)
+    this.huellaCO2.agua = (this.consumosForm.value.consumoAgua * this.obtenerFactorEmision(SupplyType.Agua).conversionFactor)
+    this.huellaCO2.diesel = (this.consumosForm.value.consumoDiesel * this.obtenerFactorEmision(SupplyType.Gasoleo).conversionFactor)
+    this.huellaCO2.gasolina = (this.consumosForm.value.consumoGasolina * this.obtenerFactorEmision(SupplyType.Gasolina).conversionFactor)
+    this.huellaCO2.butano = (this.consumosForm.value.consumoButano * this.obtenerFactorEmision(SupplyType.GasButano).conversionFactor)
+    this.huellaCO2.gasNatural = (this.consumosForm.value.consumoGasNatural * this.obtenerFactorEmision(SupplyType.GasNatural).conversionFactor)
 
-    this.huellaCO2.total = (this.huellaCO2.electricidad + 
-                            this.huellaCO2.agua + 
-                            this.huellaCO2.diesel + 
-                            this.huellaCO2.gasolina +
-                            this.huellaCO2.butano + 
-                            this.huellaCO2.gasNatural) / 1000
+    this.huellaCO2.total = (this.huellaCO2.electricidad +
+      this.huellaCO2.agua +
+      this.huellaCO2.diesel +
+      this.huellaCO2.gasolina +
+      this.huellaCO2.butano +
+      this.huellaCO2.gasNatural) / 1000
 
     return Math.round(this.huellaCO2.total * this.consumosForm.value.precioCO2 * 100) / 100
   }
 
   obtenerFactorEmision(suministro: SupplyType) {
-    return this.factoresEmision.find((f: { supply: string; }) => f.supply === suministro).conversionFactor
+    return this.factoresEmision.find((f: { supply: string; }) => f.supply === suministro)
   }
 
   obtenerFactoresEmision() {
@@ -104,8 +104,62 @@ export class CalculadoraPageComponent implements OnInit {
     })
   }
 
-  guardarResultados(){
-    
+  guardarResultados() {
+    const entryValues: { tipo: string; valor: number }[] = []
+    const conversionFactors: string[] = []
+
+    const fuentes: { tipo: SupplyType; campo: string; nombre: string }[] = [
+      { tipo: SupplyType.Electricidad, campo: 'consumoElectrico', nombre: 'electricidad' },
+      { tipo: SupplyType.Agua, campo: 'consumoAgua', nombre: 'agua' },
+      { tipo: SupplyType.Gasoleo, campo: 'consumoDiesel', nombre: 'diesel' },
+      { tipo: SupplyType.Gasolina, campo: 'consumoGasolina', nombre: 'gasolina' },
+      { tipo: SupplyType.GasButano, campo: 'consumoButano', nombre: 'butano' },
+      { tipo: SupplyType.GasNatural, campo: 'consumoGasNatural', nombre: 'gas natural' },
+    ]
+
+    for (const fuente of fuentes) {
+      const consumo = this.consumosForm.value[fuente.campo];
+
+      if (consumo === null || consumo === undefined || consumo === 0) continue;
+
+      const factor = this.obtenerFactorEmision(fuente.tipo);
+
+      entryValues.push({ tipo: fuente.nombre, valor: consumo });
+
+      conversionFactors.push(factor._id);
+    }
+
+    const body = {
+      entryValues,
+      result: Math.round(this.huellaCO2.total * this.consumosForm.value.precioCO2 * 100) / 100,
+      conversionPrice: this.consumosForm.value.precioCO2,
+      conversionFactors,
+      user: localStorage.getItem('user') || 'anonimo',
+      date: new Date()
+    }
+
+    this.calculadoraService.saveResult(body).subscribe({
+      next: () => {
+        this.calculoGuardado = true
+        Swal.fire({
+          icon: 'info',
+          title: 'Guardado Correctamente',
+          text: 'Este calculo de Huella de carbono ha sido guardado correctamente',
+          customClass: {
+            confirmButton: 'p-button p-button-primary'
+          },
+          buttonsStyling: false
+        })
+      },
+      error: (err) => {
+        console.error('❌ Error al guardar el resultado:', err)
+      }
+    })
+  }
+
+  nuevoCalculo(){
+    this.consumosForm.reset();
+    this.activeTab = 0
   }
 
 

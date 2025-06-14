@@ -18,7 +18,7 @@ export class Result {
     conversionFactors: string[] //IDs factores de conveersión utilizados para el cálculo
 
     @Prop({required: true})
-    user: string[] //ID usuario que ha realizado el cálculo
+    user: string //ID usuario que ha realizado el cálculo
 
     @Prop({required: true})
     date: Date //Fecha del cálculo

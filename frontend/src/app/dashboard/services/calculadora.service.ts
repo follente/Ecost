@@ -18,4 +18,19 @@ export class CalculadoraService {
     return this.http.get<any[]>(url);
   }
 
+  saveResult(data: any): Observable<any []>{
+    const url   = `${ this.baseUrl }/result`;
+    return this.http.post<any[]>(url, data);
+  }
+
+  getHistoricoUser(userID: string){
+    const url = `${this.baseUrl}/result/user/${userID}`;
+    return this.http.get<any[]>(url);
+  }
+
+  eliminarHistorico(id: string){
+    const url = `${this.baseUrl}/result/${id}`;
+    return this.http.delete(url);
+  }
+
 }

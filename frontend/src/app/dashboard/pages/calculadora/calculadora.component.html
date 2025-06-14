@@ -130,8 +130,11 @@
 
       <!-- Botones -->
       <div class="grid mt-3">
-        <div class="col-12 md:col-4">
+        <div *ngIf="!calculoGuardado" class="col-12 md:col-4">
           <button pButton type="button" (click)="guardarResultados()" label="Guardar Resultados" class="p-button w-full"></button>
+        </div>
+        <div *ngIf="calculoGuardado" class="col-12 md:col-4">
+          <button pButton type="button" (click)="nuevoCalculo()" label="Nuevo Cálculo" class="p-button w-full" icon="pi pi-plus"></button>
         </div>
         <div class="col-12 md:col-4">
           <button pButton type="button" label="Exportar CSV" class="p-button-outlined w-full"></button>
@@ -144,7 +147,7 @@
 
     <div *ngIf="!calculoRealizado" class="p-5 text-center text-600">
       <i class="pi pi-info-circle text-4xl mb-3 text-primary"></i>
-      <div class="text-xl text-900 font-semibold">Todavía no has realizado ningún cálculo</div>
+      <div class="text-xl text-900 font-semibold">Todavía no has realizado un cálculo</div>
       <p class="mt-2 text-600">Introduce tus datos y pulsa calcular para ver tu huella de carbono.</p>
     </div>
 

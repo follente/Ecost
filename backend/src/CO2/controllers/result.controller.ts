@@ -13,6 +13,16 @@ export class ResultController {
     return this.resultService.create(createResultDto);
   }
 
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.resultService.delete(id);
+  }
+
+  @Get('user/:id')
+    findByUser(@Param('id') id: string) {
+    return this.resultService.findByUser(id)
+  }
+
   // @Get()
   // findAll() {
   //   return this.tourneyService.findAll();

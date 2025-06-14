@@ -18,6 +18,7 @@ import { PasswordModule } from 'primeng/password';
 import { MenuModule } from 'primeng/menu';
 import { HistoricoPageComponent } from './pages/historico/historico.component';
 import { DashboardPageComponent } from './pages/dashboard/dashboard.component';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { DashboardPageComponent } from './pages/dashboard/dashboard.component';
     CardModule,
     ChartModule,
     MenuModule,
+    TableModule,
   ],
 })
 export class DashboardModule { }
