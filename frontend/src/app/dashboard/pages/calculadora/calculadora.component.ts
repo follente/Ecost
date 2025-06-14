@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { CalculadoraService } from '../../services/calculadora.service';
+import { SupplyType } from '../../enums/enums';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-calculadora',
@@ -17,42 +20,40 @@ export class CalculadoraPageComponent implements OnInit {
     agua: 0,
     diesel: 0,
     gasolina: 0,
+    butano: 0,
+    gasNatural: 0,
     total: 0
   }
+
+  precioCO2_2024: number = environment.precioCO2_2024
+  factoresEmision: any
 
   costeAmbiental: number = 0
   calculoRealizado: boolean = false
 
-
-  constructor(private fb: FormBuilder) { }
-
+  constructor(private fb: FormBuilder, private calculadoraService: CalculadoraService) { }
 
   ngOnInit(): void {
+    this.obtenerFactoresEmision()
+
     this.consumosForm = this.fb.group({
       consumoElectrico: [null, [Validators.min(0)]],
       consumoAgua: [null, [Validators.min(0)]],
       consumoDiesel: [null, [Validators.min(0)]],
       consumoGasolina: [null, [Validators.min(0)]],
-      precioCO2: [85, [Validators.required, Validators.min(0)]]
+      consumoButano: [null, [Validators.min(0)]],
+      consumoGasNatural: [null, [Validators.min(0)]],
+      precioCO2: [this.precioCO2_2024, [Validators.required, Validators.min(0)]]
     }, { validators: this.alMenosUnConsumoValidator })
 
-    Object.keys(this.consumosForm.controls).forEach(campo => {
-      this.consumosForm.get(campo)?.valueChanges.subscribe(valor => {
-        if (typeof valor !== 'number' || valor < 0) {
-          this.consumosForm.get(campo)?.setValue(0, { emitEvent: false });
-        }
-      })
-    })
+    this.ceroSiNegativo()
   }
 
 
   onSubmit(): void {
     if (this.consumosForm.valid) {
-      const { consumoElectrico, consumoAgua, consumoDiesel, consumoGasolina, precioCO2 } = this.consumosForm.value
-      console.log('Huella de carbono estimada:', this.consumosForm.value)
-      this.costeAmbiental = this.calcularHuella(consumoElectrico, consumoAgua, consumoDiesel, consumoGasolina, precioCO2)
-      console.log('Huella de carbono estimada:', this.costeAmbiental)
-      console.log('Coste Ambiental', this.costeAmbiental)
+      console.log(this.consumosForm.value)
+      this.costeAmbiental = this.calcularHuella()
       this.activeTab = 1
       this.calculoRealizado = true
     } else {
@@ -70,13 +71,41 @@ export class CalculadoraPageComponent implements OnInit {
     }
   }
 
-  calcularHuella(consumoElectrico: number, consumoAgua: number, consumoDiesel: number, consumoGasolina: number, precioCO2: number): number {
-    this.huellaCO2.electricidad = (consumoElectrico * 0.233)
-    this.huellaCO2.agua = (consumoAgua * 0.001)
-    this.huellaCO2.diesel = (consumoDiesel * 2.3)
-    this.huellaCO2.gasolina = (consumoGasolina * 2.3)
-    this.huellaCO2.total = this.huellaCO2.electricidad + this.huellaCO2.agua + this.huellaCO2.diesel + this.huellaCO2.gasolina
-    return Math.round(this.huellaCO2.total * precioCO2 * 100) / 100
+  calcularHuella(): number {
+    this.huellaCO2.electricidad = (this.consumosForm.value.consumoElectrico * this.obtenerFactorEmision(SupplyType.Electricidad))
+    this.huellaCO2.agua = (this.consumosForm.value.consumoAgua * this.obtenerFactorEmision(SupplyType.Agua))
+    this.huellaCO2.diesel = (this.consumosForm.value.consumoDiesel * this.obtenerFactorEmision(SupplyType.Gasoleo))
+    this.huellaCO2.gasolina = (this.consumosForm.value.consumoGasolina * this.obtenerFactorEmision(SupplyType.Gasolina))
+    this.huellaCO2.butano = (this.consumosForm.value.consumoButano * this.obtenerFactorEmision(SupplyType.GasButano))
+    this.huellaCO2.gasNatural = (this.consumosForm.value.consumoGasNatural * this.obtenerFactorEmision(SupplyType.GasNatural))
+
+    this.huellaCO2.total = (this.huellaCO2.electricidad + 
+                            this.huellaCO2.agua + 
+                            this.huellaCO2.diesel + 
+                            this.huellaCO2.gasolina +
+                            this.huellaCO2.butano + 
+                            this.huellaCO2.gasNatural) / 1000
+
+    return Math.round(this.huellaCO2.total * this.consumosForm.value.precioCO2 * 100) / 100
+  }
+
+  obtenerFactorEmision(suministro: SupplyType) {
+    return this.factoresEmision.find((f: { supply: string; }) => f.supply === suministro).conversionFactor
+  }
+
+  obtenerFactoresEmision() {
+    this.calculadoraService.getConversionFactors().subscribe({
+      next: (data) => {
+        this.factoresEmision = data
+      },
+      error: (err) => {
+        console.error('Error fetching conversion factors:', err);
+      }
+    })
+  }
+
+  guardarResultados(){
+    
   }
 
 
@@ -87,10 +116,20 @@ export class CalculadoraPageComponent implements OnInit {
     const gasolina = control.get('consumoGasolina')?.value;
 
     if (electricidad > 0 || agua > 0 || diesel > 0 || gasolina > 0) {
-      return null // válido
+      return null
     }
 
-    return { ningunConsumo: true } // inválido
+    return { ningunConsumo: true }
+  }
+
+  ceroSiNegativo() {
+    Object.keys(this.consumosForm.controls).forEach(campo => {
+      this.consumosForm.get(campo)?.valueChanges.subscribe(valor => {
+        if (typeof valor !== 'number' || valor < 0) {
+          this.consumosForm.get(campo)?.setValue(0, { emitEvent: false });
+        }
+      })
+    })
   }
 
 }
