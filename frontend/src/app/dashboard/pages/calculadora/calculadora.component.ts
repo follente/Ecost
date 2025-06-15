@@ -173,7 +173,8 @@ export class CalculadoraPageComponent implements OnInit {
   }
 
   nuevoCalculo() {
-    this.consumosForm.reset();
+    this.consumosForm.reset()
+    this.calculoGuardado = false
     this.activeTab = 0
   }
 
@@ -196,7 +197,7 @@ export class CalculadoraPageComponent implements OnInit {
   ceroSiNegativo() {
     Object.keys(this.consumosForm.controls).forEach(campo => {
       this.consumosForm.get(campo)?.valueChanges.subscribe(valor => {
-        if (typeof valor !== 'number' || valor < 0) {
+        if (typeof valor === 'number' && valor < 0) {
           this.consumosForm.get(campo)?.setValue(0, { emitEvent: false });
         }
       })
@@ -207,41 +208,39 @@ export class CalculadoraPageComponent implements OnInit {
 
   generarPDF() {
     const element = this.pdfContent.nativeElement;
+6
+    html2canvas(element, { scale: 4 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      const pageWidth = pdf.internal.pageSize.getWidth()
 
-    html2canvas(element).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgHeight = (canvas.height * pageWidth) / canvas.width
 
-      const imgProps = pdf.getImageProperties(imgData);
-      const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
-
-      pdf.addImage(imgData, 'PNG', 0, 10, pageWidth, imgHeight);
-      pdf.save(`resultado-huella-carbono-${new Date().getTime()}.pdf`);
+      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, imgHeight)
+      pdf.save('resultado_' + new Intl.DateTimeFormat('es-ES').format(new Date()) + '_ecost.pdf')
     })
   }
 
   exportarResultadosCSV() {
-    const encabezados = ['Fecha', 'CO₂ total (tCO2e)', 'Coste Ambiental'];
+    const encabezados = ['Fecha', 'Nombre de la Cuenta', 'Cuenta', 'Debe', 'Haber', 'Descripcion', 'Notas'];
 
     const filas = [
-      ['2025-06-15', '1.234', '104.52'],
-      ['2025-06-14', '0.982', '83.49']
-    ];
+      [new Intl.DateTimeFormat('es-ES').format(new Date()), 'Huella de Carbono', '62900001', '', this.costeAmbiental, 'Coste Ambiental', ''],
+      [new Intl.DateTimeFormat('es-ES').format(new Date()), 'Resultado del ejercicio', '129', this.costeAmbiental, '', 'Coste Ambiental', '']
+    ]
 
     const csvContent = [encabezados, ...filas]
       .map(e => e.join(';'))
-      .join('\n');
+      .join('\n')
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = window.URL.createObjectURL(blob);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = window.URL.createObjectURL(blob)
 
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'resultados_ecost.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'resultado_' + new Intl.DateTimeFormat('es-ES').format(new Date()) + '_ecost.csv')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 }
