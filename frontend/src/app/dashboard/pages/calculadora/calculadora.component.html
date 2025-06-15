@@ -140,7 +140,7 @@
           <button pButton type="button" label="Exportar CSV" class="p-button-outlined w-full"></button>
         </div>
         <div class="col-12 md:col-4">
-          <button pButton type="button" label="Exportar PDF" class="p-button-outlined w-full"></button>
+          <button pButton type="button" (click)="generarPDF()" label="Exportar PDF" class="p-button-outlined w-full"></button>
         </div>
       </div>
     </p-card>
@@ -153,3 +153,47 @@
 
   </p-tabPanel>
 </p-tabView>
+
+
+<div #pdfContent id="pdf-content" style="position: absolute; left: -9999px; top: 0; font-family: Arial, sans-serif; padding: 2rem; max-width: 800px;">
+  <header style="border-bottom: 2px solid #00796b; padding-bottom: 1rem; margin-bottom: 2rem;">
+    <h1 style="color: #00796b; font-size: 2rem; margin: 0;">Informe de Cálculo - ECOST</h1>
+    <p style="color: #555;">Usuario: <strong>{{nombreUsuario}}</strong></p>
+    <p style="color: #555;">Email: <strong>{{emailUsuario}}</strong></p>
+    <p style="color: #555;">Fecha de impresión: <strong>{{fechaActual | date:'dd/MM/yyyy'}}</strong></p>
+  </header>
+
+<section style="margin-bottom: 2rem;">
+  <h2 style="color: #00796b; border-bottom: 1px solid #ccc; margin-bottom: 1rem;">Detalles de Cálculo</h2>
+  <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+    <thead>
+      <tr style="background-color: #e0f2f1;">
+        <th style="text-align: left; padding: 0.75rem;">Suministro</th>
+        <th style="text-align: right; padding: 0.75rem;">Factor Conversión</th>
+        <th style="text-align: right; padding: 0.75rem;">Fuente</th>
+        <th style="text-align: right; padding: 0.75rem;">Huella</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let f of factoresEmision">
+        <td style="padding: 0.5rem;">{{ f.supply }}</td>
+        <td style="padding: 0.5rem; text-align: right;">{{ f.conversionFactor }}</td>
+        <td style="padding: 0.5rem; text-align: right;">{{ f.source }}</td>
+        <td style="padding: 0.5rem; text-align: right;">
+          {{ huellaCO2[f.supply.toLowerCase()] || 0 | number:'1.3-3' }} kgCO₂e
+        </td>
+      </tr>
+      <tr style="font-weight: bold; border-top: 1px solid #ccc;">
+        <td colspan="3" style="padding: 0.5rem; text-align: right;">Total</td>
+        <td style="padding: 0.5rem; text-align: right;">{{ huellaCO2.total | number:'1.3-3' }} tCO₂e</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+  <section style="margin-bottom: 2rem;">
+    <h2 style="color: #00796b; border-bottom: 1px solid #ccc;">Coste Ambiental</h2>
+    <p style="font-size: 1.2rem;">Precio del CO₂ (EU ETS 2024): <strong>{{ precioCO2_2024 }} €/tCO₂e</strong></p>
+    <p style="font-size: 1.5rem; font-weight: bold;">Coste total: <strong>{{ costeAmbiental | number:'1.2-2' }} €</strong></p>
+  </section>
+</div>

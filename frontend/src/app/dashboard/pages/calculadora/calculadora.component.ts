@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { CalculadoraService } from '../../services/calculadora.service';
 import { SupplyType } from '../../enums/enums';
 import { environment } from 'src/environments/environments';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { UserService } from '../../services/users.service';
+import { HuellaCO2 } from '../../interfaces/huellaCO2.interface';
 
 @Component({
   selector: 'app-calculadora',
@@ -15,7 +19,7 @@ export class CalculadoraPageComponent implements OnInit {
   consumosForm!: FormGroup
   activeTab: number = 0
 
-  huellaCO2 = {
+  huellaCO2: HuellaCO2  = {
     electricidad: 0,
     agua: 0,
     diesel: 0,
@@ -32,7 +36,13 @@ export class CalculadoraPageComponent implements OnInit {
   calculoRealizado: boolean = false
   calculoGuardado: boolean = false
 
-  constructor(private fb: FormBuilder, private calculadoraService: CalculadoraService) { }
+  
+  categorias = ['Electricidad', 'Agua', 'Diesel', 'Gasolina', 'Butano', 'GasNatural']
+  nombreUsuario = ''
+  emailUsuario = ''
+  fechaActual = new Date()
+
+  constructor(private fb: FormBuilder, private calculadoraService: CalculadoraService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.obtenerFactoresEmision()
@@ -46,6 +56,11 @@ export class CalculadoraPageComponent implements OnInit {
       consumoGasNatural: [null, [Validators.min(0)]],
       precioCO2: [this.precioCO2_2024, [Validators.required, Validators.min(0)]]
     }, { validators: this.alMenosUnConsumoValidator })
+
+    this.userService.getUserById(localStorage.getItem('user')!).subscribe((data) => {
+      this.nombreUsuario = data.name
+      this.emailUsuario = data.email
+    })
 
     this.ceroSiNegativo()
   }
@@ -157,7 +172,7 @@ export class CalculadoraPageComponent implements OnInit {
     })
   }
 
-  nuevoCalculo(){
+  nuevoCalculo() {
     this.consumosForm.reset();
     this.activeTab = 0
   }
@@ -168,8 +183,10 @@ export class CalculadoraPageComponent implements OnInit {
     const agua = control.get('consumoAgua')?.value;
     const diesel = control.get('consumoDiesel')?.value;
     const gasolina = control.get('consumoGasolina')?.value;
+    const butano = control.get('consumoButano')?.value;
+    const gasNatural = control.get('consumoGasNatural')?.value;
 
-    if (electricidad > 0 || agua > 0 || diesel > 0 || gasolina > 0) {
+    if (electricidad > 0 || agua > 0 || diesel > 0 || gasolina > 0 || butano > 0 || gasNatural > 0) {
       return null
     }
 
@@ -186,4 +203,22 @@ export class CalculadoraPageComponent implements OnInit {
     })
   }
 
+  @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
+
+  generarPDF() {
+    const element = this.pdfContent.nativeElement;
+
+    html2canvas(element).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 10, pageWidth, imgHeight);
+      pdf.save(`resultado-huella-carbono-${new Date().getTime()}.pdf`);
+    })
+  }
 }

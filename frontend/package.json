@@ -21,6 +21,8 @@
     "@angular/router": "^17.3.12",
     "auth-app": "file:",
     "chart.js": "^4.4.9",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primeng": "^17.4.1",
