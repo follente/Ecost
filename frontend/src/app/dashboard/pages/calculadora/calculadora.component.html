@@ -137,7 +137,7 @@
           <button pButton type="button" (click)="nuevoCalculo()" label="Nuevo Cálculo" class="p-button w-full" icon="pi pi-plus"></button>
         </div>
         <div class="col-12 md:col-4">
-          <button pButton type="button" label="Exportar CSV" class="p-button-outlined w-full"></button>
+          <button pButton type="button" (click)="exportarResultadosCSV()" label="Exportar CSV" class="p-button-outlined w-full"></button>
         </div>
         <div class="col-12 md:col-4">
           <button pButton type="button" (click)="generarPDF()" label="Exportar PDF" class="p-button-outlined w-full"></button>

@@ -19,7 +19,7 @@ export class CalculadoraPageComponent implements OnInit {
   consumosForm!: FormGroup
   activeTab: number = 0
 
-  huellaCO2: HuellaCO2  = {
+  huellaCO2: HuellaCO2 = {
     electricidad: 0,
     agua: 0,
     diesel: 0,
@@ -36,7 +36,7 @@ export class CalculadoraPageComponent implements OnInit {
   calculoRealizado: boolean = false
   calculoGuardado: boolean = false
 
-  
+
   categorias = ['Electricidad', 'Agua', 'Diesel', 'Gasolina', 'Butano', 'GasNatural']
   nombreUsuario = ''
   emailUsuario = ''
@@ -220,5 +220,28 @@ export class CalculadoraPageComponent implements OnInit {
       pdf.addImage(imgData, 'PNG', 0, 10, pageWidth, imgHeight);
       pdf.save(`resultado-huella-carbono-${new Date().getTime()}.pdf`);
     })
+  }
+
+  exportarResultadosCSV() {
+    const encabezados = ['Fecha', 'CO₂ total (tCO2e)', 'Coste Ambiental'];
+
+    const filas = [
+      ['2025-06-15', '1.234', '104.52'],
+      ['2025-06-14', '0.982', '83.49']
+    ];
+
+    const csvContent = [encabezados, ...filas]
+      .map(e => e.join(';'))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'resultados_ecost.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }
