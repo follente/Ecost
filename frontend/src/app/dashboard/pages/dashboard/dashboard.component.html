@@ -53,12 +53,12 @@
 <!-- Histórico -->
 <div class="mt-3">
   <p-card>
-    <div class="text-2xl text-900 font-bold mb-2">Histórico de Cálculos</div>
+    <div class="text-2xl text-900 font-bold mb-2">Evolución de Cálculos</div>
     <p class="text-color-secondary mb-4">Aquí podrás ver la evolución de tus cálculos</p>
 
-    <p-chart *ngIf="resultados" type="line" [data]="chartData" [options]="chartOptions" style="height: 400px;"></p-chart>
+    <p-chart *ngIf="resultados.length > 0" type="line" [data]="chartData" [options]="chartOptions" style="height: 400px;"></p-chart>
 
-    <div *ngIf="!resultados" class="flex flex-column align-items-center justify-content-center py-6">
+    <div *ngIf="resultados.length <= 0" class="flex flex-column align-items-center justify-content-center py-6">
       <span class="text-color-secondary mb-3">No hay cálculos registrados</span>
       <p-button (click)="navegar('/calculadora')" label="Realizar primer cálculo" />
     </div>
