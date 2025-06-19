@@ -2,10 +2,10 @@
 export interface HuellaCO2 {
   electricidad: number;
   agua: number;
-  diesel: number;
+  gasoleo: number;
   gasolina: number;
-  butano: number;
-  gasNatural: number;
+  gasbutano: number;
+  gasnatural: number;
   total: number;
   [key: string]: number;
 }

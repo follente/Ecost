@@ -22,10 +22,10 @@ export class CalculadoraPageComponent implements OnInit {
   huellaCO2: HuellaCO2 = {
     electricidad: 0,
     agua: 0,
-    diesel: 0,
+    gasoleo: 0,
     gasolina: 0,
-    butano: 0,
-    gasNatural: 0,
+    gasbutano: 0,
+    gasnatural: 0,
     total: 0
   }
 
@@ -37,7 +37,7 @@ export class CalculadoraPageComponent implements OnInit {
   calculoGuardado: boolean = false
 
 
-  categorias = ['Electricidad', 'Agua', 'Diesel', 'Gasolina', 'Butano', 'GasNatural']
+  // categorias = ['electricidad', 'agua', 'gasoleo', 'gasolina', 'gasButano', 'gasNatural']
   nombreUsuario = ''
   emailUsuario = ''
   fechaActual = new Date()
@@ -50,9 +50,9 @@ export class CalculadoraPageComponent implements OnInit {
     this.consumosForm = this.fb.group({
       consumoElectrico: [null, [Validators.min(0)]],
       consumoAgua: [null, [Validators.min(0)]],
-      consumoDiesel: [null, [Validators.min(0)]],
+      consumoGasoleo: [null, [Validators.min(0)]],
       consumoGasolina: [null, [Validators.min(0)]],
-      consumoButano: [null, [Validators.min(0)]],
+      consumoGasButano: [null, [Validators.min(0)]],
       consumoGasNatural: [null, [Validators.min(0)]],
       precioCO2: [this.precioCO2_2024, [Validators.required, Validators.min(0)]]
     }, { validators: this.alMenosUnConsumoValidator })
@@ -89,17 +89,17 @@ export class CalculadoraPageComponent implements OnInit {
   calcularHuella(): number {
     this.huellaCO2.electricidad = (this.consumosForm.value.consumoElectrico * this.obtenerFactorEmision(SupplyType.Electricidad).conversionFactor)
     this.huellaCO2.agua = (this.consumosForm.value.consumoAgua * this.obtenerFactorEmision(SupplyType.Agua).conversionFactor)
-    this.huellaCO2.diesel = (this.consumosForm.value.consumoDiesel * this.obtenerFactorEmision(SupplyType.Gasoleo).conversionFactor)
+    this.huellaCO2.gasoleo = (this.consumosForm.value.consumoGasoleo * this.obtenerFactorEmision(SupplyType.Gasoleo).conversionFactor)
     this.huellaCO2.gasolina = (this.consumosForm.value.consumoGasolina * this.obtenerFactorEmision(SupplyType.Gasolina).conversionFactor)
-    this.huellaCO2.butano = (this.consumosForm.value.consumoButano * this.obtenerFactorEmision(SupplyType.GasButano).conversionFactor)
-    this.huellaCO2.gasNatural = (this.consumosForm.value.consumoGasNatural * this.obtenerFactorEmision(SupplyType.GasNatural).conversionFactor)
+    this.huellaCO2.gasbutano = (this.consumosForm.value.consumoGasButano * this.obtenerFactorEmision(SupplyType.GasButano).conversionFactor)
+    this.huellaCO2.gasnatural = (this.consumosForm.value.consumoGasNatural * this.obtenerFactorEmision(SupplyType.GasNatural).conversionFactor)
 
     this.huellaCO2.total = (this.huellaCO2.electricidad +
       this.huellaCO2.agua +
-      this.huellaCO2.diesel +
+      this.huellaCO2.gasoleo +
       this.huellaCO2.gasolina +
-      this.huellaCO2.butano +
-      this.huellaCO2.gasNatural) / 1000
+      this.huellaCO2.gasbutano +
+      this.huellaCO2.gasnatural) / 1000
 
     return Math.round(this.huellaCO2.total * this.consumosForm.value.precioCO2 * 100) / 100
   }
@@ -126,10 +126,10 @@ export class CalculadoraPageComponent implements OnInit {
     const fuentes: { tipo: SupplyType; campo: string; nombre: string }[] = [
       { tipo: SupplyType.Electricidad, campo: 'consumoElectrico', nombre: 'electricidad' },
       { tipo: SupplyType.Agua, campo: 'consumoAgua', nombre: 'agua' },
-      { tipo: SupplyType.Gasoleo, campo: 'consumoDiesel', nombre: 'diesel' },
+      { tipo: SupplyType.Gasoleo, campo: 'consumoGasoleo', nombre: 'gasoleo' },
       { tipo: SupplyType.Gasolina, campo: 'consumoGasolina', nombre: 'gasolina' },
-      { tipo: SupplyType.GasButano, campo: 'consumoButano', nombre: 'butano' },
-      { tipo: SupplyType.GasNatural, campo: 'consumoGasNatural', nombre: 'gas natural' },
+      { tipo: SupplyType.GasButano, campo: 'consumoGasButano', nombre: 'gasButano' },
+      { tipo: SupplyType.GasNatural, campo: 'consumoGasNatural', nombre: 'gasNatural' },
     ]
 
     for (const fuente of fuentes) {
@@ -182,12 +182,12 @@ export class CalculadoraPageComponent implements OnInit {
   alMenosUnConsumoValidator(control: AbstractControl): ValidationErrors | null {
     const electricidad = control.get('consumoElectrico')?.value;
     const agua = control.get('consumoAgua')?.value;
-    const diesel = control.get('consumoDiesel')?.value;
+    const gasoleo = control.get('consumoGasoleo')?.value;
     const gasolina = control.get('consumoGasolina')?.value;
-    const butano = control.get('consumoButano')?.value;
+    const gasButano = control.get('consumoGasButano')?.value;
     const gasNatural = control.get('consumoGasNatural')?.value;
 
-    if (electricidad > 0 || agua > 0 || diesel > 0 || gasolina > 0 || butano > 0 || gasNatural > 0) {
+    if (electricidad > 0 || agua > 0 || gasoleo > 0 || gasolina > 0 || gasButano > 0 || gasNatural > 0) {
       return null
     }
 
@@ -207,8 +207,7 @@ export class CalculadoraPageComponent implements OnInit {
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
   generarPDF() {
-    const element = this.pdfContent.nativeElement;
-6
+    const element = this.pdfContent.nativeElement
     html2canvas(element, { scale: 4 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png')
       const pdf = new jsPDF('p', 'mm', 'a4')

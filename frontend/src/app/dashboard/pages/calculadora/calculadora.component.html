@@ -25,7 +25,7 @@
 
         <div class="col-12 md:col-6">
           <label for="fuel">Consumo de Gasóleo (litros)</label>
-          <input pInputText id="fuel" type="number" formControlName="consumoDiesel" placeholder="0"
+          <input pInputText id="fuel" type="number" formControlName="consumoGasoleo" placeholder="0"
             class="w-full border-round-xl" />
         </div>
 
@@ -37,7 +37,7 @@
 
         <div class="col-12 md:col-6">
           <label for="fuel">Consumo de Gas Butano (kg)</label>
-          <input pInputText id="fuel" type="number" formControlName="consumoButano" placeholder="0"
+          <input pInputText id="fuel" type="number" formControlName="consumoGasButano" placeholder="0"
             class="w-full border-round-xl" />
         </div>
 
@@ -85,8 +85,8 @@
         </div>
         <div class="col-12 md:col-4">
           <div class="border-1 surface-border border-round p-3">
-            <span class="font-medium text-color-secondary">Diesel</span>
-            <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.diesel | number: '1.2-2' }} kgCO2e</div>
+            <span class="font-medium text-color-secondary">Gasoleo</span>
+            <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.gasoleo | number: '1.2-2' }} kgCO2e</div>
           </div>
         </div>
         <div class="col-12 md:col-4">
@@ -98,13 +98,13 @@
          <div class="col-12 md:col-4">
         <div class="border-1 surface-border border-round p-3">
           <span class="font-medium text-color-secondary">Gas Butano</span>
-          <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.butano | number: '1.2-2' }} kgCO2e</div>
+          <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.gasbutano | number: '1.2-2' }} kgCO2e</div>
         </div>
       </div>
       <div class="col-12 md:col-4">
         <div class="border-1 surface-border border-round p-3">
           <span class="font-medium text-color-secondary">Gas Natural</span>
-          <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.gasNatural | number: '1.2-2' }} kgCO2e</div>
+          <div class="text-xl font-bold mt-1 text-900">{{ this.huellaCO2.gasnatural | number: '1.2-2' }} kgCO2e</div>
         </div>
       </div>
       </div>
